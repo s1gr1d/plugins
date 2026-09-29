@@ -8,6 +8,7 @@ module.exports = {
     external: [
       'external-cjs-node23-constructor',
       'external-cjs-node23-named',
+      'external-cjs-node23-nan',
       'external-esm-module-exports-key'
     ]
   },

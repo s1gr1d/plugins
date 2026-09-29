@@ -382,12 +382,11 @@ For these situations, you can change Rollup's behaviour either globally or per m
   import * as dep$1 from 'dep';
 
   function getDefaultExportFromNamespaceIfNotNamed(n) {
-    if (
-      n &&
-      Object.prototype.hasOwnProperty.call(n, 'module.exports') &&
-      n['default'] === n['module.exports']
-    )
-      return n['module.exports'];
+    if (n && Object.prototype.hasOwnProperty.call(n, 'module.exports')) {
+      var d = n['default'];
+      var m = n['module.exports'];
+      if (d === m || (d !== d && m !== m)) return m;
+    }
     return n && Object.prototype.hasOwnProperty.call(n, 'default') && Object.keys(n).length === 1
       ? n['default']
       : n;
