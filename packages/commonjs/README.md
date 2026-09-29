@@ -375,13 +375,19 @@ For these situations, you can change Rollup's behaviour either globally or per m
   console.log(dep);
   ```
 
-- `"auto"`: This is complementary to how [`output.exports`](https://rollupjs.org/guide/en/#outputexports): `"auto"` works in Rollup: If a module has a default export and no named exports, requiring that module returns the default export. In all other cases, the namespace is returned. For external dependencies when using `esmExternals: true`, a corresponding interop helper is added:
+- `"auto"`: This is complementary to how [`output.exports`](https://rollupjs.org/guide/en/#outputexports): `"auto"` works in Rollup: If a module has a default export and no named exports, requiring that module returns the default export. In all other cases, the namespace is returned. One exception are namespaces of CommonJS modules imported on Node >= 23: They expose the raw `module.exports` value under a `'module.exports'` key ([nodejs/node#53848](https://github.com/nodejs/node/pull/53848)), and requiring such a module returns that value, just like a real `require()` call would. For external dependencies when using `esmExternals: true`, a corresponding interop helper is added:
 
   ```js
   // output
   import * as dep$1 from 'dep';
 
   function getDefaultExportFromNamespaceIfNotNamed(n) {
+    if (
+      n &&
+      Object.prototype.hasOwnProperty.call(n, 'module.exports') &&
+      n['default'] === n['module.exports']
+    )
+      return n['module.exports'];
     return n && Object.prototype.hasOwnProperty.call(n, 'default') && Object.keys(n).length === 1
       ? n['default']
       : n;

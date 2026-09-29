@@ -5,7 +5,11 @@ module.exports = {
   description:
     'returns `module.exports` when requiring an external CommonJS module through a Node >= 23 namespace and requireReturnsDefault is "auto"',
   options: {
-    external: ['external-cjs-node23-constructor', 'external-cjs-node23-named']
+    external: [
+      'external-cjs-node23-constructor',
+      'external-cjs-node23-named',
+      'external-esm-module-exports-key'
+    ]
   },
   pluginOptions: {
     requireReturnsDefault: 'auto',
