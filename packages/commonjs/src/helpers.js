@@ -38,6 +38,7 @@ export function getDefaultExportFromNamespaceIfPresent (n) {
 }
 
 export function getDefaultExportFromNamespaceIfNotNamed (n) {
+	if (n && Object.prototype.hasOwnProperty.call(n, 'module.exports')) return n['module.exports'];
 	return n && Object.prototype.hasOwnProperty.call(n, 'default') && Object.keys(n).length === 1 ? n['default'] : n;
 }
 
